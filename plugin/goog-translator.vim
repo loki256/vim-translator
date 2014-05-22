@@ -90,11 +90,14 @@ function! s:GoogTranslate(...)
     let outp = s:_googLuaTranslate(s:query)
   endif
 
+  redir! > /tmp/vim-translate.txt
   if has_key(s:goog_conf, 'charset')
-    echo iconv(outp,s:goog_conf.charset,&enc)
+    silent echo iconv(outp,s:goog_conf.charset,&enc)
   else
-    echo outp
+    silent echo outp
   endif
+  redir END
+  pedit /tmp/vim-translate.txt
 
   return outp
 endfunction
